@@ -125,6 +125,42 @@ restartButton.addEventListener('click', restartQuiz);
 //functions
 function startQuiz() {
     console.log("quiz just started");
+    //reset vars
+    currentQuestionIndex = 0;
+    scoreSpan.textContent = 0;
+
+    startScreen.classList.remove("active");
+    quizScreen.classList.add("active");
+
+    showQuestion()
+}
+
+function showQuestion(){
+    //reset state
+    answerDisabled = false;
+
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+
+    currentQuestionSpan.textContent = currentQuestionIndex + 1;
+
+    const progressPercent = (currentQuestionIndex / quizQuestions.length) * 100;
+    progressBar.style.width = progressPercent + "%"
+
+    questionText.textContent = currentQuestion.question
+
+    //explain
+    answersContainer.innerHTML = "";
+
+    currentQuestion.answers.forEach(answer => {
+        const button = document.createElement("button")
+        button.textContent = answer.text
+        button.classList.add("answer-btn")
+
+        //dataset- property to store some custom data
+        button.dataset.correct = answer.correct
+
+        button.addEventListener("click", selectAnswer)
+    })
 }
 
 function restarQuiz(){
