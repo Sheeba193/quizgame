@@ -1,9 +1,8 @@
 //dom elements
 const startScreen = document.getElementById('start-screen');
-const startButton = document.getElementById('start-btn');
 const quizScreen = document.getElementById('quiz-screen');
 const resultScreen = document.getElementById('result-screen');
-const restartButton = document.getElementById('restart-btn');
+const startButton = document.getElementById('start-btn');
 const questionText = document.getElementById('question-text');
 const answersContainer = document.getElementById('answers-container');
 const currentQuestionSpan = document.getElementById('current-question');
@@ -12,6 +11,7 @@ const scoreSpan = document.getElementById('score');
 const finalScoreSpan = document.getElementById('final-score');
 const maxScoreSpan = document.getElementById('max-score');
 const resultMessage = document.getElementById('result-message');
+const restartButton = document.getElementById('restart-btn');
 const progressBar = document.getElementById("progress");
 
 //quiz data
@@ -109,13 +109,13 @@ const quizQuestions = [
     }
 ];
 
-//quiz state wars
+//quiz state variables
 let currentQuestionIndex = 0;
 let score = 0;
 let answerDisabled = false;
 
-totalQuestionsSpan.textContent = quizQuestions.length;
-maxScoreSpan.textContent = quizQuestions.length;
+totalQuestionsSpan.textContent = quizQuestions.length; //set max score
+maxScoreSpan.textContent = quizQuestions.length;//
 
 //event listeners
 startButton.addEventListener('click', startQuiz);
@@ -132,7 +132,7 @@ function startQuiz() {
     startScreen.classList.remove("active");
     quizScreen.classList.add("active");
 
-    showQuestion()
+    showQuestion();
 }
 
 function showQuestion(){
@@ -144,9 +144,9 @@ function showQuestion(){
     currentQuestionSpan.textContent = currentQuestionIndex + 1;
 
     const progressPercent = (currentQuestionIndex / quizQuestions.length) * 100;
-    progressBar.style.width = progressPercent + "%"
+    progressBar.style.width = progressPercent + "%";
 
-    questionText.textContent = currentQuestion.question
+    questionText.textContent = currentQuestion.question;
 
     //explain
     answersContainer.innerHTML = "";
@@ -157,12 +157,65 @@ function showQuestion(){
         button.classList.add("answer-btn")
 
         //dataset- property to store some custom data
-        button.dataset.correct = answer.correct
+        button.dataset.correct = answer.correct;
 
-        button.addEventListener("click", selectAnswer)
-    })
+        button.addEventListener("click", selectAnswer);
+
+        answersContainer.appendChild(button);
+    });
+}
+
+function selectAnswer(event){
+    if(answerDisabled) return
+
+    answerDisabled = true;
+    const selectedButton = event.target;
+    const isCorrect = selectedButton.dataset.correct === "true";
+
+    Array.from(answersContainer.children).forEach(button => {
+        if(button.dataset.correct === "true"){
+            button.classList.add("correct");
+        } else {
+            button.classList.add("incorrect");
+        }
+    });
+
+    if(isCorrect){
+    score++;
+    scoreSpan.textContent = score;
+}
+    //move to next question after a short delay
+    setTimeout(() => {
+        currentQuestionIndex++; 
+        if(currentQuestionIndex < quizQuestions.length){
+            showQuestion();
+        } else {
+            showResult();
+        }   
+    }, 1000);
+}
+
+function showResult(){
+    quizScreen.classList.remove("active");
+    resultScreen.classList.add("active");
+
+    finalScoreSpan.textContent = score;
+
+    const percentage = (score / quizQuestions.length) * 100;
+
+    if(percentage >= 80){
+        resultMessage.textContent = "Excellent work!";
+    } else if(percentage >= 50){
+        resultMessage.textContent = "Good job!";
+    } else {
+        resultMessage.textContent = "Better luck next time!";
+    }
 }
 
 function restarQuiz(){
     console.log("quiz restarted");
+
+    resultScreen.classList.remove("active");
+
+    startQuiz();
 }
