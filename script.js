@@ -218,4 +218,11 @@ function restarQuiz(){
     resultScreen.classList.remove("active");
 
     startQuiz();
+
+    
 }
+
+function submitAnswer(){
+    // This function is not needed since we are handling answer selection directly in selectAnswer()
+}   
+
