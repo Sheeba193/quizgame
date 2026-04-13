@@ -226,3 +226,8 @@ function submitAnswer(){
     // This function is not needed since we are handling answer selection directly in selectAnswer()
 }   
 
+function updateProgressBar(){
+    const progressPercent = (currentQuestionIndex / quizQuestions.length) * 100;
+    progressBar.style.width = progressPercent + "%";
+}
+        
