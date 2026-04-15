@@ -149,12 +149,12 @@ function showQuestion(){
     questionText.textContent = currentQuestion.question;
 
     //explain
-    answersContainer.innerHTML = "";
+    // answersContainer.innerHTML = "";
 
     currentQuestion.answers.forEach(answer => {
-        const button = document.createElement("button")
-        button.textContent = answer.text
-        button.classList.add("answer-btn")
+        const button = document.createElement("button");
+        button.textContent = answer.text;
+        button.classList.add("answer-btn");
 
         //dataset- property to store some custom data
         button.dataset.correct = answer.correct;
@@ -175,7 +175,7 @@ function selectAnswer(event){
     Array.from(answersContainer.children).forEach(button => {
         if(button.dataset.correct === "true"){
             button.classList.add("correct");
-        } else {
+        } else if (button === selectedButton){
             button.classList.add("incorrect");
         }
     });
