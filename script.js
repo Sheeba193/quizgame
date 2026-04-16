@@ -119,7 +119,6 @@ maxScoreSpan.textContent = quizQuestions.length;//
 
 //event listeners
 startButton.addEventListener('click', startQuiz);
-submitBtn.addEventListener('click', submitAnswer);
 restartButton.addEventListener('click', restartQuiz);
 
 //functions
@@ -127,6 +126,7 @@ function startQuiz() {
     console.log("quiz just started");
     //reset vars
     currentQuestionIndex = 0;
+    score = 0;
     scoreSpan.textContent = 0;
 
     startScreen.classList.remove("active");
@@ -149,7 +149,7 @@ function showQuestion(){
     questionText.textContent = currentQuestion.question;
 
     //explain
-    // answersContainer.innerHTML = "";
+    answersContainer.innerHTML = "";
 
     currentQuestion.answers.forEach(answer => {
         const button = document.createElement("button");
@@ -157,7 +157,7 @@ function showQuestion(){
         button.classList.add("answer-btn");
 
         //dataset- property to store some custom data
-        button.dataset.correct = answer.correct;
+        button.dataset.correct = answer.isCorrect;
 
         button.addEventListener("click", selectAnswer);
 
@@ -171,6 +171,8 @@ function selectAnswer(event){
     answerDisabled = true;
     const selectedButton = event.target;
     const isCorrect = selectedButton.dataset.correct === "true";
+
+    //highlight correct and incorrect answers
 
     Array.from(answersContainer.children).forEach(button => {
         if(button.dataset.correct === "true"){
@@ -218,13 +220,9 @@ function restarQuiz(){
     resultScreen.classList.remove("active");
 
     startQuiz();
-
     
 }
-
-function submitAnswer(){
-    // This function is not needed since we are handling answer selection directly in selectAnswer()
-}   
+ 
 
 function updateProgressBar(){
     const progressPercent = (currentQuestionIndex / quizQuestions.length) * 100;
