@@ -75,7 +75,7 @@ body{
 }
 
 .answer-btn{
-    background-color: #e86a33;
+    background-color: #040202;
     color: white;
     border: 2px solid #eadbc8;
     border-radius: 0.5rem;
@@ -86,7 +86,7 @@ body{
 }
 
 .answer-btn:hover{
-    background-color: #d65a24;
+    background-color: #e2916f;
     border-color: #d65a24;
 }
 
